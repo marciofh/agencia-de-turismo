@@ -4,10 +4,11 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 import time
 from bs4 import BeautifulSoup
+import pandas as pd
 
 #CONFIGURAÇÕES DO DRIVER
 options = Options()
-#options.headless = True
+options.headless = True
 driver = webdriver.Firefox(options=options)
 url = "https://www.voegol.com.br"
 driver.get(url)
@@ -33,8 +34,8 @@ time.sleep(1)
 cookies.click()
 
 #INPUT CIDADE
-input_cidade('edit-fieldset-origin', 'Rio de Janeiro')
-input_cidade('edit-fieldset-destiny', 'Belo Horizonte')
+input_cidade('edit-fieldset-origin', 'São Paulo') #ORIGEM
+input_cidade('edit-fieldset-destiny', 'Salvador') #DESTINO
 
 #INPUT PASSAGEIRO
 div_passageiro = driver.find_element(By.ID, "edit-fieldset-passengers")
@@ -42,7 +43,7 @@ time.sleep(1)
 div_passageiro.click()
 passageiro = driver.find_element(By.NAME, "add_pass")
 time.sleep(1)
-for i in range(3-1):
+for i in range(3-1): #PASSAGEIRO
     passageiro.click()
     time.sleep(1)
 
@@ -51,8 +52,8 @@ time.sleep(1)
 submit_passageiro.click()
 
 #INPUT DATA
-input_data("edit-departure-date", '01072022')
-input_data("edit-back-date", '03072022')
+input_data("edit-departure-date", '01072022') #DATA IDA
+input_data("edit-back-date", '03072022') #DATA VOLTA
 
 #SUBMIT
 bnt_submit = driver.find_element(By.ID, "search-flights")
@@ -61,24 +62,38 @@ bnt_submit.click()
 time.sleep(10)
 
 #PEGANDO HTML DA RESPOSTA
-div = driver.find_element(By.XPATH, "//form")
+form = driver.find_element(By.XPATH, "//section[@class='ng-tns-c148-0 ng-star-inserted']")
 time.sleep(1)
-html = div.get_attribute('outerHTML')
-soup = BeautifulSoup(html, 'html.parser')
+html_text = form.get_attribute('outerHTML')
+soup = BeautifulSoup(html_text, 'html.parser')
+
+list = []
+for span in soup.find_all(class_='a-desc__value'):
+    list.append(span.get_text())
+
+#TRATANDO DADO
+df = pd.DataFrame(list)
+df = df.rename(columns = {0 : 'valores'})
+passagens = pd.DataFrame()
+tamanho = int(len(df) / 5)
+
+for i in range(tamanho):
+    voo = df.iloc[:5]
+    passagens['coluna ' + str(i)] = voo
+    df = df.drop(df.index[:5])
+    df.reset_index(inplace = True, drop = True)
+
+passagens = passagens.transpose()
+passagens.reset_index(inplace = True, drop = True)
+passagens = passagens.rename(columns={0 : 'origem'})
+passagens = passagens.rename(columns={1 : 'destino'})
+passagens = passagens.rename(columns={2 : 'duracao'})
+passagens = passagens.rename(columns={3 : 'conexao'})
+passagens = passagens.rename(columns={4 : 'preco'})
+passagens['duracao'] = passagens['duracao'].replace(' ,', '', regex = True)
+
+print(passagens)
 
 
-voo = soup.find_all(class_='m-bar-product m-bar-product--border-bottom')
-dados = voo.find_all(class_='a-desc__value')
 
-print(dados)
-# origem = voo[0].contents
-# destino = voo[1].contents
-# duração = voo[2].contents
-# conexao = voo[3].contents
-# preco = voo[4].contents
-
-# print('Origem: ' + origem[0])
-# print('Destino: ' + destino[0])
-# print('Duração: ' + duração[0])
-# print('Conexão: ' + conexao[0])
-# print('Preço: ' + preco[2])
+driver.quit()
