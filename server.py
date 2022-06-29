@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request
-from crawle import Crawler
+from crawler import Crawler
 
 app = Flask(__name__)
 
@@ -16,10 +16,10 @@ def passagem():
     data_volta = request.form.get('data_volta')
     
     crawler = Crawler()
-    res = crawler.send_dados(origem, destino, passageiros, data_ida, data_volta)
-    crawler.get_dados(res)
+    list_section = crawler.send_dados(origem, destino, passageiros, data_ida, data_volta)
+    dados = crawler.get_dados(list_section)
     
-    return 'oi'
+    return dados
 
 if __name__ == "__main__":
     app.run()
