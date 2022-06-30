@@ -109,7 +109,7 @@ class Crawler:
         time.sleep(10)
 
         #PEGANDO PASSAGENS IDA
-        section_ida = self.driver.find_element(By.XPATH, "//section[@class='ng-tns-c148-0 ng-star-inserted']")
+        section_ida = self.driver.find_element(By.XPATH, "//div[@class='p-select-flight ng-tns-c156-0']//section")
         time.sleep(1)
         section_ida = section_ida.get_attribute('outerHTML')
 
@@ -123,7 +123,7 @@ class Crawler:
         time.sleep(10)
 
         #PEGANDO PASSAGENS VOLTA
-        section_volta = self.driver.find_element(By.XPATH, "//section[@class='ng-tns-c148-0 ng-star-inserted']")
+        section_volta = self.driver.find_element(By.XPATH, "//div[@class='p-select-flight ng-tns-c156-0']//section")
         time.sleep(1)
         section_volta = section_volta.get_attribute('outerHTML')
         list_section = [section_ida, section_volta]
