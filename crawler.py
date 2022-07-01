@@ -13,7 +13,7 @@ class Crawler:
     def __init__(self):
         self.URL = 'https://www.voegol.com.br'
         options = Options()
-        options.headless = True
+        #options.headless = True
         self.driver = webdriver.Firefox(options = options)
         self.driver.maximize_window()
     
@@ -28,7 +28,7 @@ class Crawler:
     
     #FUNÇÃO DATA
     def input_data(self, id, data):
-        data = datetime.strptime(data, "%Y-%m-%d").date()
+        data = datetime.strptime(data, "%Y-%m-%d").date()#OLHAR ISSO AQUI
         new_data = data.strftime('%d/%m/%Y')
         new_data = str(new_data)
         new_data = new_data.replace('/','')
@@ -127,7 +127,7 @@ class Crawler:
         time.sleep(1)
         section_volta = section_volta.get_attribute('outerHTML')
         list_section = [section_ida, section_volta]
-        self.driver.quit()
+        #self.driver.quit()
         
         return list_section
 

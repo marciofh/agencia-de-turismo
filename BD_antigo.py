@@ -138,8 +138,15 @@ def DecideFuncao(opcao, data, simbolo):
     stocks = []
     if opcao == 1:
         tupla = (simbolo,  data['Name'], data['Description'], data['Country'], data['Address'], data['Sector'], data['Industry'])
+        
+        
+        
         valor = Corporation.criaCorporation(tupla)
         Corporation.cadastraCorporation(valor)
+         
+        
+        
+        
         return 
     if opcao == 2:
         tupla = (simbolo, data['ReturnOnAssetsTTM'], data['ReturnOnEquityTTM'], data['DividendYield'], data['Beta'], data['PriceToSalesRatioTTM'], data['ProfitMargin'], data['MarketCapitalization'], data['AnalystTargetPrice'], data['QuarterlyRevenueGrowthYOY'], data['QuarterlyEarningsGrowthYOY'])
