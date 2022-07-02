@@ -6,13 +6,13 @@ app = Flask(__name__)
 
 @app.route("/")
 def index():
-    return render_template('index.html')
+    return render_template('Home.html')
 
 @app.route("/passagem", methods=["POST"])
 def passagem():
     origem = request.form.get('origem')
     destino = request.form.get('destino')
-    passageiros = request.form.get('passageiro')
+    passageiros = request.form.get('passageiros')
     data_ida = request.form.get('data_ida')
     data_volta = request.form.get('data_volta')
 
@@ -44,19 +44,18 @@ def hospedagem():
     voo_ida = request.form.get('voo_ida')
     voo_volta = request.form.get('voo_volta')    
     
+    res = {
+            'voo_ida': voo_ida,
+            'voo_volta': voo_volta
+        }
+    
+    return res
+
     #id = Api.get_locationId(destino)
     #cadastra cidade
 
     #hoteis = Api.get_hotels(id, passageiros, data_ida, data_volta)
     #cadastra hotel
-
-
-    res = {
-        'voo_ida': voo_ida,
-        'voo_volta': voo_volta
-        }
-    return res
-
 
 if __name__ == "__main__":
     app.run()

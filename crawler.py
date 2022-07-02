@@ -13,7 +13,7 @@ class Crawler:
     def __init__(self):
         self.URL = 'https://www.voegol.com.br'
         options = Options()
-        #options.headless = True
+        options.headless = True
         self.driver = webdriver.Firefox(options = options)
         self.driver.maximize_window()
     
@@ -28,7 +28,7 @@ class Crawler:
     
     #FUNÇÃO DATA
     def input_data(self, id, data):
-        data = datetime.strptime(data, "%Y-%m-%d").date()#OLHAR ISSO AQUI
+        data = datetime.strptime(data, "%Y-%m-%d").date()
         new_data = data.strftime('%d/%m/%Y')
         new_data = str(new_data)
         new_data = new_data.replace('/','')
@@ -90,6 +90,7 @@ class Crawler:
         div_passageiro.click()
         btn_passageiro = self.driver.find_element(By.NAME, "add_pass")
         time.sleep(1)
+        print(passageiros)
         for i in range(int(passageiros) - 1): #PASSAGEIRO
             btn_passageiro.click()
             time.sleep(1)
@@ -126,8 +127,9 @@ class Crawler:
         section_volta = self.driver.find_element(By.XPATH, "//div[@class='p-select-flight ng-tns-c156-0']//section")
         time.sleep(1)
         section_volta = section_volta.get_attribute('outerHTML')
+        
         list_section = [section_ida, section_volta]
-        #self.driver.quit()
+        self.driver.quit()
         
         return list_section
 
