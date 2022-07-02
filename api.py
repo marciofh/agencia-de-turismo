@@ -56,10 +56,13 @@ class Api:
 
         hotels = []
         for i in range(5):
+            dados[i]['raw_ranking'] = float(dados[i]['raw_ranking'])
+            dados[i]['raw_ranking'] = round(dados[i]['raw_ranking'], 2)
+
             hotels.append({
                 "nome" : dados[i]['name'],
                 "preco" : dados[i]['price'],
-                "foto" : dados[i]['photo']['images']['original']['url'],
+                "foto" : dados[i]['photo']['images']['small']['url'],
                 "ranking_site" : dados[i]['raw_ranking'],
                 "stars": dados[i]['hotel_class'],
                 "url_site" : dados[i]['web_url'],

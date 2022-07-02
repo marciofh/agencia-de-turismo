@@ -1,3 +1,4 @@
+from pyparsing import col
 from selenium import webdriver
 from selenium.webdriver.firefox.options import Options
 from selenium.webdriver.common.by import By
@@ -46,13 +47,19 @@ class Crawler:
             lista.append(span.get_text())
         df = pd.DataFrame(lista)
         df = df.rename(columns = {0 : 'valores'})
+        
+        if int(len(df) % 6 == 0):
+            columns = 6
+        elif int(len(df) % 5 == 0):
+            columns = 5
+        
+        qtde = int(len(df) / columns)
         passagens = pd.DataFrame()
-        qtde = int(len(df) / 5)
 
         for i in range(qtde):
-            voo = df.iloc[:5]
+            voo = df.iloc[: columns]
             passagens['coluna ' + str(i)] = voo
-            df = df.drop(df.index[:5])
+            df = df.drop(df.index[: columns])
             df.reset_index(inplace = True, drop = True)
 
         passagens = passagens.transpose()
@@ -61,7 +68,9 @@ class Crawler:
         passagens = passagens.rename(columns={1 : 'destino'})
         passagens = passagens.rename(columns={2 : 'duracao'})
         passagens = passagens.rename(columns={3 : 'conexao'})
-        passagens = passagens.rename(columns={4 : 'preco'})
+        passagens = passagens.rename(columns={columns-1 : 'preco'})
+        if columns == 6:
+            passagens = passagens.drop(columns = [4])
         passagens['duracao'] = passagens['duracao'].replace(' ,', '', regex = True)
         passagens['preco'] = passagens['preco'].replace('\u00a0', ' ', regex = True)
 
@@ -90,7 +99,6 @@ class Crawler:
         div_passageiro.click()
         btn_passageiro = self.driver.find_element(By.NAME, "add_pass")
         time.sleep(1)
-        print(passageiros)
         for i in range(int(passageiros) - 1): #PASSAGEIRO
             btn_passageiro.click()
             time.sleep(1)
