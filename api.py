@@ -66,7 +66,6 @@ class Api:
                 "url_site" : dados[i]['web_url'],
                 "endereco" : dados[i]['address'] 
             }
-
             lista_hotel.append(hotel)
 
         return lista_hotel

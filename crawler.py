@@ -7,6 +7,8 @@ import pandas as pd
 from datetime import datetime
 import time
 import json
+import re
+
 class Crawler:
     #CONFIGURAÇÕES DO DRIVER
     def __init__(self):
@@ -40,39 +42,34 @@ class Crawler:
     def get_tabela(self, html_text):
         soup = BeautifulSoup(html_text, 'html.parser')
         lista = []
-
         for span in soup.find_all(class_= 'a-desc__value'):
             lista.append(span.get_text())
+
         df = pd.DataFrame(lista)
         df = df.rename(columns = {0 : 'valores'})
-        
-        if int(len(df) % 6 == 0):
-            columns = 6
-        elif int(len(df) % 5 == 0):
-            columns = 5
-        
+        columns = 5
         qtde = int(len(df) / columns)
-        passagens = pd.DataFrame()
+        df_pass = pd.DataFrame()
 
         for i in range(qtde):
             voo = df.iloc[: columns]
-            passagens['coluna ' + str(i)] = voo
+            df_pass['coluna ' + str(i)] = voo
             df = df.drop(df.index[: columns])
             df.reset_index(inplace = True, drop = True)
 
-        passagens = passagens.transpose()
-        passagens.reset_index(inplace = True, drop = True)
-        passagens = passagens.rename(columns={0 : 'origem'})
-        passagens = passagens.rename(columns={1 : 'destino'})
-        passagens = passagens.rename(columns={2 : 'duracao'})
-        passagens = passagens.rename(columns={3 : 'conexao'})
-        passagens = passagens.rename(columns={columns-1 : 'preco'})
-        if columns == 6:
-            passagens = passagens.drop(columns = [4])
-        passagens['duracao'] = passagens['duracao'].replace(' ,', '', regex = True)
-        passagens['preco'] = passagens['preco'].replace('\u00a0', ' ', regex = True)
+        df_pass = df_pass.transpose()
+        df_pass.reset_index(inplace = True, drop = True)
+        df_pass = df_pass.rename(columns={0 : 'origem'})
+        df_pass = df_pass.rename(columns={1 : 'destino'})
+        df_pass = df_pass.rename(columns={2 : 'duracao'})
+        df_pass = df_pass.rename(columns={3 : 'conexao'})
+        df_pass = df_pass.rename(columns={4: 'preco'})
 
-        return passagens
+        df_pass['preco'] = df_pass['preco'].map(lambda x: re.sub('[^0-9-,]', '', x))
+        df_pass['preco'] = df_pass['preco'].map(lambda x: re.sub(',', '.', x))
+        df_pass['duracao'] = df_pass['duracao'].map(lambda x: re.sub('[^0-9-:]', '', x))
+
+        return df_pass
     
     #INPUT DADOS
     def send_dados(self, origem, destino, passageiros, data_ida, data_volta):

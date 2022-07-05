@@ -72,8 +72,10 @@ def pacote():
     pacote = {
         "hotel": hotel,
         "ida": ida,
-        "volta": volta
+        "volta": volta,
+        "passageiros": session['passageiros']
     }
+    
 
     return render_template('Pacote.html', content = pacote)
 
