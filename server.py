@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, session
 from crawler import Crawler
 from api import Api
+import ast
 
 app = Flask(__name__)
 
@@ -19,8 +20,8 @@ def passagem():
     #consulta destino
     #NÃO TEM CIDADE     #quer dizer que o destino não foi pesquisando, nao tem passagem nem hotel
     crawler = Crawler()
-    list_section = crawler.send_dados(session["origem"], session["destino"], session["passageiros"], session["data_ida"], session["data_volta"])
-    passagens = crawler.get_dados(list_section)
+    list_html = crawler.send_dados(session["origem"], session["destino"], session["passageiros"], session["data_ida"], session["data_volta"])
+    passagens = crawler.get_dados(list_html)
     #cadastra passagem
     #returna passagem
 
@@ -43,11 +44,8 @@ def passagem():
 def hospedagem():
     voo_ida = request.form.get('voo_ida')
     voo_volta = request.form.get('voo_volta')
-
-    res = {
-            'voo_ida': voo_ida,
-            'voo_volta': voo_volta
-        }
+    session["voo_ida"] = voo_ida
+    session["voo_volta"] = voo_volta
 
     destino = session["destino"]
     data_ida = session["data_ida"]
@@ -65,7 +63,19 @@ def hospedagem():
 @app.route("/pacote", methods=["POST"])
 def pacote():
     hotel = request.form.get('hotel')
-    return hotel
+    ida = session["voo_ida"]
+    volta = session["voo_volta"]
+    hotel = ast.literal_eval(hotel)
+    ida = ast.literal_eval(ida)
+    volta = ast.literal_eval(volta)
+
+    pacote = {
+        "hotel": hotel,
+        "ida": ida,
+        "volta": volta
+    }
+
+    return render_template('Pacote.html', content = pacote)
 
 if __name__ == "__main__":
     app.secret_key = 'key'

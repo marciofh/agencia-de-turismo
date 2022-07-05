@@ -1,7 +1,6 @@
 import requests
 from datetime import datetime
 from credentials import keys
-import json
 
 TOKEN = keys.get('TOKEN')
 
@@ -54,12 +53,11 @@ class Api:
         response = response.json()
         dados = (response['data'])
 
-        hotels = []
+        lista_hotel = []
         for i in range(5):
             dados[i]['raw_ranking'] = float(dados[i]['raw_ranking'])
             dados[i]['raw_ranking'] = round(dados[i]['raw_ranking'], 2)
-
-            hotels.append({
+            hotel = {
                 "nome" : dados[i]['name'],
                 "preco" : dados[i]['price'],
                 "foto" : dados[i]['photo']['images']['small']['url'],
@@ -67,6 +65,8 @@ class Api:
                 "stars": dados[i]['hotel_class'],
                 "url_site" : dados[i]['web_url'],
                 "endereco" : dados[i]['address'] 
-            })
+            }
 
-        return hotels
+            lista_hotel.append(hotel)
+
+        return lista_hotel

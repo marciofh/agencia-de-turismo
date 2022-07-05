@@ -1,4 +1,3 @@
-from pyparsing import col
 from selenium import webdriver
 from selenium.webdriver.firefox.options import Options
 from selenium.webdriver.common.by import By
@@ -8,7 +7,6 @@ import pandas as pd
 from datetime import datetime
 import time
 import json
-
 class Crawler:
     #CONFIGURAÇÕES DO DRIVER
     def __init__(self):
@@ -74,9 +72,6 @@ class Crawler:
         passagens['duracao'] = passagens['duracao'].replace(' ,', '', regex = True)
         passagens['preco'] = passagens['preco'].replace('\u00a0', ' ', regex = True)
 
-        print(passagens)
-        print('\n')
-
         return passagens
     
     #INPUT DADOS
@@ -135,25 +130,23 @@ class Crawler:
         section_volta = self.driver.find_element(By.XPATH, "//div[@class='p-select-flight ng-tns-c156-0']//section")
         time.sleep(1)
         section_volta = section_volta.get_attribute('outerHTML')
+        list_html = [section_ida, section_volta]
         
-        list_section = [section_ida, section_volta]
         self.driver.quit()
-        
-        return list_section
+        return list_html
 
     #RETORNANDO DADOS
-    def get_dados(self, sections):
-        list_df = []
-        for section in sections:
-            list_df.append(self.get_tabela(section))          
-        js_ida = list_df[0].to_json(orient = 'records')
-        js_ida = json.loads(js_ida)
-        js_volta = list_df[1].to_json(orient = 'records')
-        js_volta = json.loads(js_volta)
+    def get_dados(self, lista_html):
+        lista_pass = []
+        for html in lista_html:
+            df = self.get_tabela(html)
+            passagem = df.to_json(orient = 'records')
+            passagem = json.loads(passagem)
+            lista_pass.append(passagem)
 
-        dados = {
-            "ida" : js_ida,
-            "volta" : js_volta
-            }
+        passagens = {
+        "idas" : lista_pass[0],
+        "voltas" : lista_pass[1]
+        }
 
-        return(dados)
+        return(passagens)

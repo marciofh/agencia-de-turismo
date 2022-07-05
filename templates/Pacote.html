@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h3>Passagem</h3>
+    <h4>ida</h4>
+    <table>
+        <tr>
+            <td>{{content['ida']['origem']}}</td>
+            <td>{{content['ida']['destino']}}</td>
+            <td>{{content['ida']['duracao']}}</td>
+            <td>{{content['ida']['conexao']}}</td>
+            <td>{{content['ida']['preco']}}</td>
+        </tr>
+    </table>
+
+    <h4>volta</h4>
+    <table>
+        <tr>
+            <td>{{content['volta']['origem']}}</td>
+            <td>{{content['volta']['destino']}}</td>
+            <td>{{content['volta']['duracao']}}</td>
+            <td>{{content['volta']['conexao']}}</td>
+            <td>{{content['volta']['preco']}}</td>
+        </tr>
+    </table>
+
+    <h3>Hotel</h3>
+    <table>
+        <tr>
+            <td>{{content['hotel']['nome']}}</td>
+            <td><img src="{{content['hotel']['foto']}}"></td>
+            <td>{{content['hotel']['ranking_site']}}</td>
+            <td>{{content['hotel']['stars']}}</td>
+            <td>{{content['hotel']['url_site']}}</td>
+            <td>{{content['hotel']['stars']}}</td>
+            <td>{{content['hotel']['preco']}}</td>
+        </tr>
+    </table>
+    
+    <h3>TOTAL:</h3>
+</body>
+</html>
