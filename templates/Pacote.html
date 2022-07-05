@@ -43,15 +43,36 @@
         </tr>
     </table>
     
+    {% set total_ida = content['ida']['preco']|float * content['passageiros']|float %}
+    {% set total_volta = content['volta']['preco']|float * content['passageiros']|float %}
+    {% set total_hotel = content['hotel']['preco']|float %}
+    {% set total_pacote = total_ida + total_volta + total_hotel %}
+
     <h3>TOTAL:</h3>
     <table>
         <tr>
             <th>Passagem de ida</th>
             <td>{{content['ida']['preco']}}</td>
             <td>{{content['passageiros']}}</td>
-            
-            {% set total_ida = content['ida']['preco']|float * content['passageiros']|float %}
-            {{'%0.2f'| format(total_ida|float)}}
+            <td>{{'%0.2f'| format(total_ida|float)}}</td>
+        </tr>
+        <tr>
+            <th>Passagem de volta</th>
+            <td>{{content['volta']['preco']}}</td>
+            <td>{{content['passageiros']}}</td>
+            <td>{{'%0.2f'| format(total_volta|float)}}</td>
+        </tr>
+        <tr>
+            <th>Hotel</th>
+            <td>{{content['hotel']['preco']}}</td>
+            <td></td>
+            <td>{{'%0.2f'| format(total_hotel|float)}}</td>
+        </tr>
+        <tr>
+            <th>TOTAL</th>
+            <td></td>
+            <td></td>
+            <td>{{'%0.2f'| format(total_pacote|float)}}</td>
         </tr>
     </table>
 </body>

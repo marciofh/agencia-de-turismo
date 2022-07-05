@@ -65,16 +65,16 @@ class Crawler:
         df_pass = df_pass.rename(columns={3 : 'conexao'})
         df_pass = df_pass.rename(columns={4: 'preco'})
 
-        df_pass['preco'] = df_pass['preco'].map(lambda x: re.sub('[^0-9-,]', '', x))
+        df_pass['preco'] = df_pass['preco'].map(lambda x: re.sub('[^0-9,]', '', x))
         df_pass['preco'] = df_pass['preco'].map(lambda x: re.sub(',', '.', x))
-        df_pass['duracao'] = df_pass['duracao'].map(lambda x: re.sub('[^0-9-:]', '', x))
+        df_pass['duracao'] = df_pass['duracao'].map(lambda x: re.sub('[^0-9:]', '', x))
 
         return df_pass
     
     #INPUT DADOS
     def send_dados(self, origem, destino, passageiros, data_ida, data_volta):
         self.driver.get(self.URL)
-        time.sleep(2)
+        time.sleep(3)
         
         #COOKIES
         cookies = self.driver.find_element(By.ID, "onetrust-accept-btn-handler")

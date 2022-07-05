@@ -1,5 +1,8 @@
 import requests
 from datetime import datetime
+import pandas as pd
+import re
+import json
 from credentials import keys
 
 TOKEN = keys.get('TOKEN')
@@ -68,4 +71,10 @@ class Api:
             }
             lista_hotel.append(hotel)
 
-        return lista_hotel
+        df = pd.DataFrame(lista_hotel)
+        df['preco'] = df['preco'].map(lambda x: x[3:10])
+        df['preco'] = df['preco'].map(lambda x: re.sub('[^0-9,]', '', x))
+        js = df.to_json(orient = 'records')
+        js = json.loads(js)
+        
+        return js

@@ -38,7 +38,7 @@ def passagem():
         #TEM PASSAGEM
         #retorna passagem
 
-    return render_template('passagens.html', content = passagens)
+    return render_template('Passagem.html', content = passagens)
     
 @app.route("/hospedagem", methods=["POST"])
 def hospedagem():
