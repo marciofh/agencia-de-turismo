@@ -19,6 +19,8 @@ class Crawler:
         self.driver.maximize_window()
         self.origem = ''
         self.destino = ''
+        self.data_ida = ''
+        self.data_volta = ''
         self.url_compra = ''
     
     #FUNÇÃO CIDADE
@@ -42,7 +44,7 @@ class Crawler:
         field.send_keys(new_data, Keys.ENTER)
 
     #TRATANDO DADOS
-    def get_tabela(self, html_text, origem, destino):
+    def get_tabela(self, html_text, origem, destino, data):
         soup = BeautifulSoup(html_text, 'html.parser')
         lista = []
         for span in soup.find_all(class_= 'a-desc__value'):
@@ -74,15 +76,19 @@ class Crawler:
         df_pass['hora_emb'] = df_pass['hora_emb'].map(lambda x: re.sub('[^0-9:]', '', x))
         df_pass['hora_desemb'] = df_pass['hora_desemb'].map(lambda x: re.sub('[^0-9:]', '', x))
         df_pass.insert(5, 'origem', origem)
-        df_pass.insert(5, 'destino', destino)
+        df_pass.insert(6, 'destino', destino)
+        df_pass.insert(7, 'data', data)
 
         print(df_pass)
+        print()
         return df_pass
     
     #INPUT DADOS
     def send_dados(self, origem, destino, passageiros, data_ida, data_volta):
         self.origem  = origem
         self.destino = destino
+        self.data_ida = data_ida
+        self.data_volta = data_volta
         self.driver.get(self.URL)
         time.sleep(3)
         
@@ -146,12 +152,12 @@ class Crawler:
     #RETORNANDO DADOS
     def get_dados(self, lista_html):
         #passagem de ida
-        df_ida = self.get_tabela(lista_html[0], self.origem, self.destino)
+        df_ida = self.get_tabela(lista_html[0], self.origem, self.destino, self.data_ida)
         pass_ida = df_ida.to_json(orient = 'records')
         pass_ida = json.loads(pass_ida)
 
         #passagem de volta
-        df_volta = self.get_tabela(lista_html[1], self.destino, self.origem)
+        df_volta = self.get_tabela(lista_html[1], self.destino, self.origem, self.data_volta)
         pass_volta = df_volta.to_json(orient = 'records')
         pass_volta = json.loads(pass_volta)
 

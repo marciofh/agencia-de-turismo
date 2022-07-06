@@ -17,18 +17,17 @@ def passagem():
     session["data_ida"] = request.form.get('data_ida')
     session["data_volta"] = request.form.get('data_volta')
 
-    #consulta destino
+    #consultar se a cidade ja foi procurada antes, buscar pelo nome do destino
     #NÃO TEM CIDADE     #quer dizer que o destino não foi pesquisando, nao tem passagem nem hotel
     crawler = Crawler()
     list_html = crawler.send_dados(session["origem"], session["destino"], session["passageiros"], session["data_ida"], session["data_volta"])
     session["url_gol"] = crawler.url_compra
     passagens = crawler.get_dados(list_html)
-    
     #cadastra passagem
     #returna passagem
 
     #TEM CIDADE     #quer dizer que destino ja foi pesquisado, pode ter passagem e hotel (depende da data)
-    #consulta passagem pela origem, data_ida
+    #consulta passagem pela origem, destino, data
     #consulta passagem pelo destino, data_volta
         #NÃO TEM PASSAGEM
         # crawler = Crawler()
@@ -48,17 +47,18 @@ def hospedagem():
     voo_volta = request.form.get('voo_volta')
     session["voo_ida"] = voo_ida
     session["voo_volta"] = voo_volta
-
     destino = session["destino"]
     data_ida = session["data_ida"]
     data_volta = session["data_volta"]
     passageiros = session["passageiros"]
 
+    #NÃO TEM CIDADE
     id = Api.get_locationId(destino)
     #cadastra cidade
-
     hoteis = Api.get_hotels(id, passageiros, data_ida, data_volta)
     #cadastra hotel
+
+    #TEM CIDADE
 
     return render_template('Hotel.html', content = hoteis)
 

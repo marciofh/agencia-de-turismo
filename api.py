@@ -67,13 +67,16 @@ class Api:
                 "ranking_site" : dados[i]['raw_ranking'],
                 "stars": dados[i]['hotel_class'],
                 "url_site" : dados[i]['web_url'],
-                "endereco" : dados[i]['address'] 
+                "endereco" : dados[i]['address'],
+                "data": data_ida
             }
             lista_hotel.append(hotel)
 
         df = pd.DataFrame(lista_hotel)
         df['preco'] = df['preco'].map(lambda x: x[3:10])
         df['preco'] = df['preco'].map(lambda x: re.sub('[^0-9,]', '', x))
+        print(df)
+        print()
         js = df.to_json(orient = 'records')
         js = json.loads(js)
         
