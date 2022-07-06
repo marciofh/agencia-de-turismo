@@ -7,39 +7,38 @@
     <title>Document</title>
 </head>
 <body>
-    <h3>Passagem</h3>
+    <h3>Passagem <a href="{{content['url_gol']}}">redirecionar para compra</a></h3>
     <h4>ida</h4>
     <table>
         <tr>
-            <td>{{content['ida']['origem']}}</td>
-            <td>{{content['ida']['destino']}}</td>
+            <td>{{content['ida']['origem']}} - {{content['ida']['hora_emb']}}</td>
+            <td>{{content['ida']['destino']}} - {{content['ida']['hora_desemb']}}</td>
             <td>{{content['ida']['duracao']}}</td>
             <td>{{content['ida']['conexao']}}</td>
-            <td>{{content['ida']['preco']}}</td>
+            <td>R$ {{content['ida']['preco']}}</td>
         </tr>
     </table>
 
     <h4>volta</h4>
     <table>
         <tr>
-            <td>{{content['volta']['origem']}}</td>
-            <td>{{content['volta']['destino']}}</td>
+            <td>{{content['volta']['origem']}} - {{content['volta']['hora_emb']}}</td></td>
+            <td>{{content['volta']['destino']}} - {{content['volta']['hora_desemb']}}</td></td>
             <td>{{content['volta']['duracao']}}</td>
             <td>{{content['volta']['conexao']}}</td>
-            <td>{{content['volta']['preco']}}</td>
+            <td>R$ {{content['volta']['preco']}}</td>
         </tr>
     </table>
 
     <h3>Hotel</h3>
     <table>
         <tr>
-            <td>{{content['hotel']['nome']}}</td>
             <td><img src="{{content['hotel']['foto']}}"></td>
+            <td>{{content['hotel']['nome']}}</td>
             <td>{{content['hotel']['ranking_site']}}</td>
             <td>{{content['hotel']['stars']}}</td>
-            <td>{{content['hotel']['url_site']}}</td>
-            <td>{{content['hotel']['stars']}}</td>
-            <td>{{content['hotel']['preco']}}</td>
+            <td>R$ {{content['hotel']['preco']}}</td>
+            <td><a href="{{content['hotel']['url_site']}}">redirecionar para compra</a></td>
         </tr>
     </table>
     
@@ -52,27 +51,27 @@
     <table>
         <tr>
             <th>Passagem de ida</th>
-            <td>{{content['ida']['preco']}}</td>
+            <td>R$ {{content['ida']['preco']}}</td>
             <td>{{content['passageiros']}}</td>
             <td>{{'%0.2f'| format(total_ida|float)}}</td>
         </tr>
         <tr>
             <th>Passagem de volta</th>
-            <td>{{content['volta']['preco']}}</td>
+            <td>R$ {{content['volta']['preco']}}</td>
             <td>{{content['passageiros']}}</td>
             <td>{{'%0.2f'| format(total_volta|float)}}</td>
         </tr>
         <tr>
             <th>Hotel</th>
-            <td>{{content['hotel']['preco']}}</td>
+            <td>R$ {{content['hotel']['preco']}}</td>
             <td></td>
-            <td>{{'%0.2f'| format(total_hotel|float)}}</td>
+            <td>R$ {{'%0.2f'| format(total_hotel|float)}}</td>
         </tr>
         <tr>
             <th>TOTAL</th>
             <td></td>
             <td></td>
-            <td>{{'%0.2f'| format(total_pacote|float)}}</td>
+            <td>R$ {{'%0.2f'| format(total_pacote|float)}}</td>
         </tr>
     </table>
 </body>

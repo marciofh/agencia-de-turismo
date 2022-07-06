@@ -17,6 +17,9 @@ class Crawler:
         options.headless = True
         self.driver = webdriver.Firefox(options = options)
         self.driver.maximize_window()
+        self.origem = ''
+        self.destino = ''
+        self.url_compra = ''
     
     #FUNÇÃO CIDADE
     def input_cidade(self, id, cidade):
@@ -39,7 +42,7 @@ class Crawler:
         field.send_keys(new_data, Keys.ENTER)
 
     #TRATANDO DADOS
-    def get_tabela(self, html_text):
+    def get_tabela(self, html_text, origem, destino):
         soup = BeautifulSoup(html_text, 'html.parser')
         lista = []
         for span in soup.find_all(class_= 'a-desc__value'):
@@ -59,20 +62,27 @@ class Crawler:
 
         df_pass = df_pass.transpose()
         df_pass.reset_index(inplace = True, drop = True)
-        df_pass = df_pass.rename(columns={0 : 'origem'})
-        df_pass = df_pass.rename(columns={1 : 'destino'})
+        df_pass = df_pass.rename(columns={0 : 'hora_emb'})
+        df_pass = df_pass.rename(columns={1 : 'hora_desemb'})
         df_pass = df_pass.rename(columns={2 : 'duracao'})
         df_pass = df_pass.rename(columns={3 : 'conexao'})
         df_pass = df_pass.rename(columns={4: 'preco'})
-
+        
         df_pass['preco'] = df_pass['preco'].map(lambda x: re.sub('[^0-9,]', '', x))
         df_pass['preco'] = df_pass['preco'].map(lambda x: re.sub(',', '.', x))
         df_pass['duracao'] = df_pass['duracao'].map(lambda x: re.sub('[^0-9:]', '', x))
+        df_pass['hora_emb'] = df_pass['hora_emb'].map(lambda x: re.sub('[^0-9:]', '', x))
+        df_pass['hora_desemb'] = df_pass['hora_desemb'].map(lambda x: re.sub('[^0-9:]', '', x))
+        df_pass.insert(5, 'origem', origem)
+        df_pass.insert(5, 'destino', destino)
 
+        print(df_pass)
         return df_pass
     
     #INPUT DADOS
     def send_dados(self, origem, destino, passageiros, data_ida, data_volta):
+        self.origem  = origem
+        self.destino = destino
         self.driver.get(self.URL)
         time.sleep(3)
         
@@ -129,21 +139,25 @@ class Crawler:
         section_volta = section_volta.get_attribute('outerHTML')
         list_html = [section_ida, section_volta]
         
+        self.url_compra = self.driver.current_url 
         self.driver.quit()
         return list_html
 
     #RETORNANDO DADOS
     def get_dados(self, lista_html):
-        lista_pass = []
-        for html in lista_html:
-            df = self.get_tabela(html)
-            passagem = df.to_json(orient = 'records')
-            passagem = json.loads(passagem)
-            lista_pass.append(passagem)
+        #passagem de ida
+        df_ida = self.get_tabela(lista_html[0], self.origem, self.destino)
+        pass_ida = df_ida.to_json(orient = 'records')
+        pass_ida = json.loads(pass_ida)
+
+        #passagem de volta
+        df_volta = self.get_tabela(lista_html[1], self.destino, self.origem)
+        pass_volta = df_volta.to_json(orient = 'records')
+        pass_volta = json.loads(pass_volta)
 
         passagens = {
-        "idas" : lista_pass[0],
-        "voltas" : lista_pass[1]
+            "idas" : pass_ida,
+            "voltas" : pass_volta
         }
 
         return(passagens)

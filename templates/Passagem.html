@@ -26,10 +26,10 @@
                 {% for valor in content['idas'] %} 
                   <div class="row">
                     <div class="col">
-                      {{valor['origem']}}
+                      {{valor['origem']}} - {{valor['hora_emb']}}
                     </div>
                     <div class="col">
-                      {{valor['destino']}}
+                      {{valor['destino']}} - {{valor['hora_desemb']}}
                     </div>
                     <div class="col">
                       {{valor['duracao']}}
@@ -59,10 +59,10 @@
                 {% for valor in content['voltas'] %} 
                 <div class="row">
                   <div class="col">
-                    {{valor['origem']}}
+                    {{valor['origem']}} - {{valor['hora_emb']}}
                   </div>
                   <div class="col">
-                    {{valor['destino']}}
+                    {{valor['destino']}} - {{valor['hora_desemb']}}
                   </div>
                   <div class="col">
                     {{valor['duracao']}}

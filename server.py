@@ -21,7 +21,9 @@ def passagem():
     #NÃO TEM CIDADE     #quer dizer que o destino não foi pesquisando, nao tem passagem nem hotel
     crawler = Crawler()
     list_html = crawler.send_dados(session["origem"], session["destino"], session["passageiros"], session["data_ida"], session["data_volta"])
+    session["url_gol"] = crawler.url_compra
     passagens = crawler.get_dados(list_html)
+    
     #cadastra passagem
     #returna passagem
 
@@ -73,6 +75,7 @@ def pacote():
         "hotel": hotel,
         "ida": ida,
         "volta": volta,
+        "url_gol": session['url_gol'],
         "passageiros": session['passageiros']
     }
     
