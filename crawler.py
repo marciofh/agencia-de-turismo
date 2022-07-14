@@ -14,7 +14,7 @@ class Crawler:
     def __init__(self):
         self.URL = 'https://www.voegol.com.br'
         options = Options()
-        options.headless = True
+        #options.headless = True
         self.driver = webdriver.Firefox(options = options)
         self.driver.maximize_window()
         self.origem = ''
@@ -152,18 +152,19 @@ class Crawler:
     #RETORNANDO DADOS
     def get_dados(self, lista_html):
         #passagem de ida
+        print("passagens de ida:")
         df_ida = self.get_tabela(lista_html[0], self.origem, self.destino, self.data_ida)
         pass_ida = df_ida.to_json(orient = 'records')
         pass_ida = json.loads(pass_ida)
 
         #passagem de volta
+        print("passagens de volta:")
         df_volta = self.get_tabela(lista_html[1], self.destino, self.origem, self.data_volta)
         pass_volta = df_volta.to_json(orient = 'records')
         pass_volta = json.loads(pass_volta)
-
         passagens = {
             "idas" : pass_ida,
             "voltas" : pass_volta
         }
 
-        return(passagens)
+        return passagens

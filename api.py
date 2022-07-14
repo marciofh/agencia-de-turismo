@@ -34,7 +34,6 @@ class Api:
 
     def get_hotels(location_id, passageiros, data_ida, data_volta):
         url = "https://travel-advisor.p.rapidapi.com/hotels/get-details"
-
         data_ida = datetime.strptime(data_ida, "%Y-%m-%d").date()
         data_volta = datetime.strptime(data_volta, "%Y-%m-%d").date()
         noites = (data_volta - data_ida).days
@@ -71,7 +70,6 @@ class Api:
                 "data": data_ida
             }
             lista_hotel.append(hotel)
-
         df = pd.DataFrame(lista_hotel)
         df['preco'] = df['preco'].map(lambda x: x[3:10])
         df['preco'] = df['preco'].map(lambda x: re.sub('[^0-9,]', '', x))
