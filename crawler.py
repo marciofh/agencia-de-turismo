@@ -8,13 +8,16 @@ from datetime import datetime
 import time
 import json
 import re
+from credentials import keys
+
+URL = keys.get('URL')
 
 class Crawler:
     #CONFIGURAÇÕES DO DRIVER
     def __init__(self):
-        self.URL = 'https://www.voegol.com.br'
+        self.URL = URL
         options = Options()
-        #options.headless = True
+        options.headless = True
         self.driver = webdriver.Firefox(options = options)
         self.driver.maximize_window()
         self.origem = ''
