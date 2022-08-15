@@ -19,7 +19,7 @@ O framework utilizado foi Selenium desenvolvido em Python e pode
 rodar em qualquer navegador. É necessário escolher qual browser deseja usar e importar o webdriver do Selenium.
 
 # API
-A api é um serviço desenvolvido pela Dojo Net, ela busca
+A API é um serviço desenvolvido pela Dojo Net, ela busca
 no TripAdivisor todos os hotéis da cidade e retorna vários dados como nome, preço,
 endereço, fotos, avaliações. A api é gratuita, porém possui um limite de 500 requisições por
 mês e 5 requisições a cada segundo. É necessário um token que pode ser adquirido no site
