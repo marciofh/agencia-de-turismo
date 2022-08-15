@@ -21,11 +21,11 @@ rodar em qualquer navegador. É necessário escolher qual browser deseja usar e 
 # API
 A API é um serviço desenvolvido pela Dojo Net, ela busca
 no TripAdivisor todos os hotéis da cidade e retorna vários dados como nome, preço,
-endereço, fotos, avaliações. A api é gratuita, porém possui um limite de 500 requisições por
+endereço, fotos, avaliações. O serviço é gratuito, porém possui um limite de 500 requisições por
 mês e 5 requisições a cada segundo. É necessário um token que pode ser adquirido no site
 https://rapidapi.com/apidojo/api/travel-advisor.
 
 # Observações
 Deve-se levar em consideração as desvantagens de cada serviço, seja na
-demora significativa do Crawler e as inúmeras vezes em que ocorre bugs, ou a restrição que a api
+demora significativa do Crawler e as inúmeras vezes em que ocorre bugs, ou a restrição que a API
 nos impõem. 
